@@ -1,3 +1,38 @@
+# Fonction pour afficher l'aide du script
+function Show-Help {
+    Write-Host "Utilisation :"
+    Write-Host "  .\MonScript.ps1 -Param1 <valeur1> -Param2 <valeur2>"
+    Write-Host
+    Write-Host "Description :"
+    Write-Host "  Ce script exécute une série d'actions en fonction des paramètres fournis."
+    Write-Host
+    Write-Host "Paramètres :"
+    Write-Host "  -Param1 <valeur1> : Description du premier paramètre."
+    Write-Host "  -Param2 <valeur2> : Description du second paramètre."
+    Write-Host "  -h ou --help      : Affiche cette aide."
+    Write-Host
+    Write-Host "Exemple :"
+    Write-Host "  .\MonScript.ps1 -Param1 'exemple' -Param2 'valeur'"
+    exit
+}
+
+# Vérification des paramètres
+param (
+    [string]$Param1,
+    [string]$Param2,
+    [switch]$Help
+)
+
+# Affiche l'aide si aucun paramètre n'est fourni ou si -h / --help est utilisé
+if (-not $Param1 -and -not $Param2 -or $Help) {
+    Show-Help
+}
+
+# Code principal du script
+Write-Host "Exécution du script avec les paramètres suivants :"
+Write-Host "Param1 = $Param1"
+Write-Host "Param2 = $Param2"
+
 # Fonction pour crypter une chaîne de caractères
 function Encrypt-String {
     param (
