@@ -1,6 +1,60 @@
 # Fonction pour afficher l'aide du script
 function Show-Help {
     Write-Host "Utilisation :"
+    Write-Host "  .\MonScript.ps1 -resetPwd"
+    Write-Host "  .\MonScript.ps1 -fichierSrc <chemin_fichier_source> -fichierDst <chemin_dossier_destination>"
+    Write-Host
+    Write-Host "Description :"
+    Write-Host "  Ce script permet de soit réinitialiser un mot de passe, soit de copier un fichier d'un emplacement à un autre."
+    Write-Host
+    Write-Host "Paramètres :"
+    Write-Host "  -resetPwd            : Réinitialise le mot de passe de l'utilisateur."
+    Write-Host "  -fichierSrc <chemin> : Chemin du fichier source à copier."
+    Write-Host "  -fichierDst <chemin> : Chemin de destination où copier le fichier."
+    Write-Host "  -h ou --help         : Affiche cette aide."
+    Write-Host
+    Write-Host "Exemples :"
+    Write-Host "  .\MonScript.ps1 -resetPwd"
+    Write-Host "  .\MonScript.ps1 -fichierSrc 'C:\source\monFichier.txt' -fichierDst 'C:\dossier_destination'"
+    exit
+}
+
+# Définition des paramètres
+param (
+    [switch]$resetPwd,
+    [string]$fichierSrc,
+    [string]$fichierDst,
+    [switch]$Help
+)
+
+# Affiche l'aide si aucun paramètre n'est fourni, ou si -h / --help est utilisé
+if ($Help -or (-not $resetPwd -and -not ($fichierSrc -and $fichierDst))) {
+    Show-Help
+}
+
+# Cas 1 : Exécution de l'option -resetPwd
+if ($resetPwd) {
+    Write-Host "Réinitialisation du mot de passe de l'utilisateur..."
+    # Ajoutez ici la logique de réinitialisation de mot de passe
+    Write-Host "Mot de passe réinitialisé avec succès."
+}
+
+# Cas 2 : Copie de fichier avec -fichierSrc et -fichierDst
+elseif ($fichierSrc -and $fichierDst) {
+    if (Test-Path $fichierSrc) {
+        Write-Host "Le fichier '$fichierSrc' existe. Copie en cours vers '$fichierDst'..."
+        Copy-Item -Path $fichierSrc -Destination $fichierDst -Force
+        Write-Host "Fichier copié avec succès."
+    } else {
+        Write-Host "Erreur : Le fichier source '$fichierSrc' n'existe pas."
+    }
+} else {
+    Show-Help  # Si les paramètres sont incorrects, afficher l'aide
+}
+
+# Fonction pour afficher l'aide du script
+function Show-Help {
+    Write-Host "Utilisation :"
     Write-Host "  .\MonScript.ps1 -Param1 <valeur1> -Param2 <valeur2>"
     Write-Host
     Write-Host "Description :"
