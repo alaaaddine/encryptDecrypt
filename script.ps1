@@ -1,3 +1,65 @@
+# Fonction pour afficher l'aide
+function Show-Help {
+    Write-Host "Utilisation :"
+    Write-Host "  .\MonScript.ps1 -resetPwd"
+    Write-Host "  .\MonScript.ps1 -fichierSrc <chemin_fichier_source> -fichierDst <chemin_dossier_destination>"
+    Write-Host
+    Write-Host "Description :"
+    Write-Host "  Ce script permet de soit réinitialiser un mot de passe, soit de copier un fichier d'un emplacement à un autre."
+    Write-Host
+    Write-Host "Paramètres :"
+    Write-Host "  -resetPwd            : Réinitialise le mot de passe de l'utilisateur."
+    Write-Host "  -fichierSrc <chemin> : Chemin du fichier source à copier."
+    Write-Host "  -fichierDst <chemin> : Chemin de destination où copier le fichier."
+    Write-Host "  -h ou --help         : Affiche cette aide."
+    exit
+}
+
+# Initialisation des variables
+$resetPwd = $false
+$fichierSrc = $null
+$fichierDst = $null
+
+# Parcourir les arguments fournis
+for ($i = 0; $i -lt $args.Length; $i++) {
+    switch ($args[$i]) {
+        "-resetPwd" {
+            $resetPwd = $true
+        }
+        "-fichierSrc" {
+            $i++
+            if ($i -lt $args.Length) { $fichierSrc = $args[$i] }
+        }
+        "-fichierDst" {
+            $i++
+            if ($i -lt $args.Length) { $fichierDst = $args[$i] }
+        }
+        "-h" { Show-Help }
+        "--help" { Show-Help }
+        default {
+            Write-Host "Paramètre inconnu : $($args[$i])"
+            Show-Help
+        }
+    }
+}
+
+# Vérifier si les paramètres requis sont présents
+if ($resetPwd) {
+    Write-Host "Réinitialisation du mot de passe de l'utilisateur..."
+    # Logique de réinitialisation ici
+    Write-Host "Mot de passe réinitialisé avec succès."
+} elseif ($fichierSrc -and $fichierDst) {
+    if (Test-Path $fichierSrc) {
+        Write-Host "Le fichier '$fichierSrc' existe. Copie en cours vers '$fichierDst'..."
+        Copy-Item -Path $fichierSrc -Destination $fichierDst -Force
+        Write-Host "Fichier copié avec succès."
+    } else {
+        Write-Host "Erreur : Le fichier source '$fichierSrc' n'existe pas."
+    }
+} else {
+    Show-Help  # Affiche l'aide si les paramètres sont incorrects
+}
+
 # Fonction pour afficher l'aide du script
 function Show-Help {
     Write-Host "Utilisation :"
