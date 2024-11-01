@@ -20,6 +20,10 @@ $dataFiltre = $data | Select-Object -Skip 4 | ForEach-Object {
         ColonneA = $_.A
         ColonneB = $_.B
         ColonneC = $_.C
+    # Retourner l'objet seulement si au moins une colonne n'est pas vide
+    if ($ligne.ColonneA -or $ligne.ColonneB -or $ligne.ColonneC) {
+        return $ligne
+    
     }
 }
 
