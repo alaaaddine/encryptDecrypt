@@ -1,3 +1,31 @@
+# Charger le module ImportExcel
+Import-Module ImportExcel
+
+# Chemin du fichier Excel
+$fichierExcel = "C:\chemin\vers\votre_fichier.xlsx"
+
+# Nom de la feuille
+$feuilleNom = "NomDeLaFeuille"
+
+# Colonnes à lire (par exemple : 'A', 'B', et 'C')
+$colonnes = @("A", "B", "C")  
+
+# Lire la feuille Excel
+$data = Import-Excel -Path $fichierExcel -WorksheetName $feuilleNom
+
+# Filtrer les données à partir de la 5ème ligne
+$dataFiltre = $data | Select-Object -Skip 4 | ForEach-Object {
+    # Récupérer les colonnes spécifiques
+    [PSCustomObject]@{
+        ColonneA = $_.A
+        ColonneB = $_.B
+        ColonneC = $_.C
+    }
+}
+
+# Afficher les données
+$dataFiltre | Format-Table -AutoSize
+
 # Fonction pour afficher l'aide
 function Show-Help {
     Write-Host "Utilisation :"
